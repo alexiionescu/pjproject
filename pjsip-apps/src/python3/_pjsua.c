@@ -4441,10 +4441,6 @@ PyMODINIT_FUNC PyInit__pjsua()
     PyObject* m = NULL;
 #define ADD_CONSTANT(mod,name)	PyModule_AddIntConstant(mod,#name,name)
 
-
-    
-    PyEval_InitThreads();
-
     if (PyType_Ready(&PyTyp_pjsua_callback) < 0)
         return NULL;
     if (PyType_Ready(&PyTyp_pjsua_config) < 0)

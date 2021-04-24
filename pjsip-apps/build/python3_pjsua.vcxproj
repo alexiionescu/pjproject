@@ -10,6 +10,8 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <!-- Import common config -->
+  <Import Project="..\..\build\vs\pjproject-vs14-common-config.props" />
   <PropertyGroup Label="Globals">
     <ProjectGuid>{bd610027-4117-4f3c-8dd6-fc009e16226c}</ProjectGuid>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
@@ -27,16 +29,26 @@
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>NotSet</CharacterSet>
   </PropertyGroup>
+  <!-- Override the PlatformToolset -->
+  <PropertyGroup>
+    <PlatformToolset>$(BuildToolset)</PlatformToolset>
+    <CharacterSet Condition="'$(API_Family)'!='WinDesktop'">
+    </CharacterSet>
+  </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release-Dynamic|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+    <Import Project="..\..\build\vs\pjproject-vs14-win64-release-defaults.props" />
+    <Import Project="..\..\build\vs\pjproject-vs14-release-dynamic-defaults.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug-Dynamic|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+    <Import Project="..\..\build\vs\pjproject-vs14-win64-common-defaults.props" />
+    <Import Project="..\..\build\vs\pjproject-vs14-debug-dynamic-defaults.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
@@ -69,8 +81,6 @@
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>..\..\pjlib\include;..\..\pjlib-util\include;..\..\pjmedia\include;..\..\pjsip\include;../../pjnath/include;$(LOCALAPPDATA)\Programs\Python\Python39\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;PY_PJSUA_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <PrecompiledHeaderOutputFile>$(OutDir)python_pjsua.pch</PrecompiledHeaderOutputFile>
       <AssemblerListingLocation>$(OutDir)</AssemblerListingLocation>
       <ObjectFileName>$(OutDir)</ObjectFileName>
@@ -118,7 +128,6 @@
       <AdditionalIncludeDirectories>..\..\pjlib\include;..\..\pjlib-util\include;..\..\pjmedia\include;..\..\pjsip\include;../../pjnath/include;$(LOCALAPPDATA)\Programs\Python\Python39\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;PY_PJSUA_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <PrecompiledHeaderOutputFile>$(OutDir)python_pjsua.pch</PrecompiledHeaderOutputFile>
       <AssemblerListingLocation>$(OutDir)</AssemblerListingLocation>
@@ -160,15 +169,14 @@
     <ClInclude Include="..\src\python3\_pjsua.h" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="libpjproject.vcxproj">
-      <Project>{23d7679c-764c-4e02-8b29-bb882ceeefe2}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="..\src\python3\pip_install.bat" />
     <None Include="..\src\python3\pjsua.py" />
     <None Include="..\src\python3\setup-vc.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="libpjproject.vcxproj">
+      <Project>{23d7679c-764c-4e02-8b29-bb882ceeefe2}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
